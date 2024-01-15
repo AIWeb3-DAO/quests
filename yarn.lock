@@ -277,6 +277,21 @@
     rxjs "^7.8.1"
     tslib "^2.6.2"
 
+"@polkadot/api-contract@^10.11.1":
+  version "10.11.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-10.11.2.tgz#2211fc17ea470413b279bafccea8f70f3308fa4d"
+  integrity sha512-n+G1puptaQA5CwO2EHmD29QR1qlV/dVs6R0cBSGFaXvYJxqYJvN2LEir3i9vWjO0IVqulTjLPWvv7MbR3CxhmA==
+  dependencies:
+    "@polkadot/api" "10.11.2"
+    "@polkadot/api-augment" "10.11.2"
+    "@polkadot/types" "10.11.2"
+    "@polkadot/types-codec" "10.11.2"
+    "@polkadot/types-create" "10.11.2"
+    "@polkadot/util" "^12.6.2"
+    "@polkadot/util-crypto" "^12.6.2"
+    rxjs "^7.8.1"
+    tslib "^2.6.2"
+
 "@polkadot/api-derive@10.11.2":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api-derive/-/api-derive-10.11.2.tgz#eb9e3f681ef3dda88ee2dfa538a6bded937de77e"
@@ -293,7 +308,7 @@
     rxjs "^7.8.1"
     tslib "^2.6.2"
 
-"@polkadot/api@10.11.2", "@polkadot/api@^10.11.1":
+"@polkadot/api@10.11.2", "@polkadot/api@^10.11.1", "@polkadot/api@^10.11.2":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-10.11.2.tgz#16cd07062d51cc9cf77a3a6afa3cb4e526e44a82"
   integrity sha512-AorCZxCWCoTtdbl4DPUZh+ACe/pbLIS1BkdQY0AFJuZllm0x/yWzjgampcPd5jQAA/O3iKShRBkZqj6Mk9yG/A==
@@ -357,7 +372,7 @@
     "@substrate/ss58-registry" "^1.44.0"
     tslib "^2.6.2"
 
-"@polkadot/react-identicon@^3.6.4":
+"@polkadot/react-identicon@^3.6.3", "@polkadot/react-identicon@^3.6.4":
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-3.6.4.tgz#1fd5915e63ceb21a6c6a07cd3bd0a2032213486e"
   integrity sha512-y8DFLXEVVZ1dKAQDdvtASxPyR4JqnqokRzbuZF1eDUleNxOJruNDGLGrfuM6rqVNHdHRy35Rku546aFqVE5Ldg==
@@ -1605,6 +1620,11 @@ embla-carousel@8.0.0-rc19:
   version "8.0.0-rc19"
   resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-8.0.0-rc19.tgz#f0d8dbf54f2f8f2cdfe0697f371fe5d5fd4e2dac"
   integrity sha512-PAChVyYoVZo8subkBN8LjZ7+0vk4CmVvMnxH0Y2ux76VUEUBl1wk5xDo8+MUhH5MXU6ZrgkBpMe++bKob1Z+2g==
+
+emoji-regex@^10.2.1:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-10.3.0.tgz#76998b9268409eb3dae3de989254d456e70cfe23"
+  integrity sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -3005,6 +3025,15 @@ pnglib@0.0.1:
   resolved "https://registry.yarnpkg.com/pnglib/-/pnglib-0.0.1.tgz#f9ab6f9c688f4a9d579ad8be28878a716e30c096"
   integrity sha512-95ChzOoYLOPIyVmL+Y6X+abKGXUJlvOVLkB1QQkyXl7Uczc6FElUy/x01NS7r2GX6GRezloO/ecCX9h4U9KadA==
 
+polconnect@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/polconnect/-/polconnect-0.1.8.tgz#b4bf4855f3d328c0b54ed5704a777d9ea2b2284a"
+  integrity sha512-2lLK8syl8unTAnsJVzkjkqOKTTyWK8VDCdY6WVTw1vtGyCFDsCmak418bw7evo2/V3enHaLavlZcl0Ns3j4fFA==
+  dependencies:
+    "@polkadot/api-contract" "^10.11.1"
+    "@polkadot/react-identicon" "^3.6.3"
+    string-width "^6.1.0"
+
 postcss-import@^15.1.0:
   version "15.1.0"
   resolved "https://registry.yarnpkg.com/postcss-import/-/postcss-import-15.1.0.tgz#41c64ed8cc0e23735a9698b3249ffdbf704adc70"
@@ -3464,6 +3493,15 @@ string-width@^5.0.1, string-width@^5.1.2:
   dependencies:
     eastasianwidth "^0.2.0"
     emoji-regex "^9.2.2"
+    strip-ansi "^7.0.1"
+
+string-width@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-6.1.0.tgz#96488d6ed23f9ad5d82d13522af9e4c4c3fd7518"
+  integrity sha512-k01swCJAgQmuADB0YIc+7TuatfNvTBVOoaUWJjTB9R4VJzR5vNWzf5t42ESVZFPS8xTySF7CAdV4t/aaIm3UnQ==
+  dependencies:
+    eastasianwidth "^0.2.0"
+    emoji-regex "^10.2.1"
     strip-ansi "^7.0.1"
 
 string.prototype.matchall@^4.0.8:

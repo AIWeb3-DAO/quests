@@ -4,7 +4,7 @@ import { Button } from './ui/button'
 export default function Mint() {
   const [answerTxt, setanswerTxt] = useState()
   return (
-    <div className=' flex items-center h-screen  justify-center'>
+    <div className=' flex items-center h-screen  justify-center bg-black text-gray-300'>
       <div className='w-full min-h-80 flex flex-col items-center justify-center'>
          <div className='flex items-center gap-9 border border-gray-600 py-6 px-2 w-full rounded-lg'>
            <div className=''>
