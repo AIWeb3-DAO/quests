@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, {useState} from 'react'
 import { Button } from './ui/button'
 import { Keyring, ApiPromise, WsProvider  } from "@polkadot/api";
@@ -7,7 +9,7 @@ const keyring = new Keyring({ type: 'sr25519' })
 const { stringToHex } = require('@polkadot/util')
 export default function Create() {
     const [blockchain, setblockchain] = useState("polkadot")
-    const [questionId, setquestionId] = useState()
+    const [questionId, setquestionId] = useState("")
     const [question, setquestion] = useState("")
 
   const {isConnected, accounts, activeSigner, activeAccount, activeExtension, api, activeChain} = usePolkit()
@@ -99,8 +101,9 @@ export default function Create() {
     <div className='max-w-7xl h-screen mx-auto  flex items-center justify-center'>
         <div className='w-2/5 border border-gray-700 min-h-[400px] p-4 rounded-lg'>
            <h1 className='text-center font-extrabold text-xl text-gray-300'>Only Whitelisted Admins can create Q / A</h1> 
-
+  
             <div className='my-5'>
+              {/*}
                 <div className='flex flex-col gap-2 mb-4'>
                     <h3 className='text-gray-400'>Blockachin</h3>
                  <select value={blockchain} name='blockhain' onChange={e => setblockchain(e.target.value)}
@@ -113,8 +116,8 @@ export default function Create() {
                         className='bg-inherit ' 
                      >Astar</option>
                  </select>
-        </div> 
-
+  </div> */}
+  
         <div className='flex flex-col gap-2 mb-4'>
                     <h3 className='text-gray-400'>Question Id</h3>
                  <input value={questionId} name='blockhain' onChange={e => setquestionId(e.target.value)}
@@ -124,7 +127,7 @@ export default function Create() {
                     
         </div> 
 
-        
+
         <div className='flex flex-col gap-2 mb-4'>
                     <h3 className='text-gray-400'>Question </h3>
                  <textarea value={question} name='blockhain' onChange={e => setquestion(e.target.value)}
@@ -133,7 +136,7 @@ export default function Create() {
                  />
                     
         </div> 
-        <Button  className='w-full bg-pink-600/85' onClick={() => handlCreate()}>Post Question</Button>
+        <Button  className='w-full bg-pink-600/85' onClick={() => handlCreate()} disabled={!isConnected && !activeAccount}>Post Question</Button>
 
         </div>
         </div>

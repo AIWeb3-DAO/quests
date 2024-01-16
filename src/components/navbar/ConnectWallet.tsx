@@ -3,7 +3,7 @@ import { ConnectButton, usePolkit } from 'polconnect'
 export default function ConnectWallet() {
   const {handleConnectModal, handleWalletConnect} = usePolkit()
   return (
-    <div className='flex gap-5'>
+    <div className=''>
  <ConnectButton backGround='pink' label='connect wallet' showChain={false}   />
     </div>
    

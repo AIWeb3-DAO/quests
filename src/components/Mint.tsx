@@ -1,11 +1,60 @@
+//@ts-nocheck
+
 import React, {useState} from 'react'
 import { Button } from './ui/button'
-
+import { usePolkit } from 'polconnect'
+import { Keyring, ApiPromise, WsProvider  } from "@polkadot/api";
+import { u8aToHex } from '@polkadot/util';
+const { stringToHex } = require('@polkadot/util')
+const keyring = new Keyring({ type: 'sr25519' })
 export default function Mint() {
   const [answerTxt, setanswerTxt] = useState()
+  const {accounts, activeAccount, activeSigner, api} = usePolkit()
+
+   const handleMint = async () => {
+
+    const tx_remark = api?.tx.system.remark(
+      stringToHex(
+        JSON.stringify(
+          {
+            "p": "drc-20-a",
+            "op": "mintAnswer",
+            "space":"aiweb3-AMA",
+            "questionID": "1",
+            "answer":  answerTxt,
+                   
+          }
+        )
+      )
+
+    )
+
+      // "batchAll" can submit multi-event in a single tx. 
+  try  {
+    const tx_batchAll = await api?.tx.utility.batchAll(
+    [tx_remark]
+    ).signAndSend(
+      // active  account from polconnect  
+    activeAccount.address, { signer: activeSigner }, ({ status }) => {
+      if (status.isInBlock) {
+          console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+      } else {
+          console.log(`Current status: ${status.type}`);
+      }
+  }).catch((error: any) => {
+      console.log(':( transaction failed', error);
+  });
+
+    
+  } catch(error){
+    alert(`something went wrong, ${error}`)
+
+    }
+   }
   return (
     <div className=' flex items-center h-screen  justify-center bg-black text-gray-300'>
       <div className='w-full min-h-80 flex flex-col items-center justify-center'>
+        {/*}
          <div className='flex items-center gap-9 border border-gray-600 py-6 px-2 w-full rounded-lg'>
            <div className=''>
           <p>AWD</p>
@@ -42,8 +91,12 @@ export default function Mint() {
                 </div>
             </div>
          </div>
-
-         <div className='flex flex-col items-center gap-9 border my-6 border-gray-600 py-6 px-2 w-full rounded-lg'>
+  */}
+   <div className='flex items-center  border border-gray-600 py-6 px-2 w-full rounded-lg flex-col gap-4'>
+     <h1 className='text-2xl font-bold'>Question</h1>
+     <h2 className='font-semibold'>What is the most popular Chinese community in polkadot ecosystem</h2>
+   </div>
+         <div className='flex flex-col items-center gap-9 border my-6 border-gray-600 py-6 px-2 w-full rounded-lg min-w-[500px]'>
           {/*}
           <div>
            <h1 className='font-semibold mb-2'>Mint text</h1>
@@ -65,7 +118,7 @@ export default function Mint() {
 
   />
 
-    <Button  className='w-full bg-pink-600/85'>Mint</Button>
+    <Button  className='w-full bg-pink-600/85' disabled={!activeAccount} onClick={() => handleMint()}>Mint</Button>
           
          </div>
       </div>
