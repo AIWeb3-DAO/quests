@@ -1,9 +1,100 @@
 import React, {useState} from 'react'
 import { Button } from './ui/button'
+import { Keyring, ApiPromise, WsProvider  } from "@polkadot/api";
+import { u8aToHex } from '@polkadot/util';
+import { usePolkit } from "polconnect";
+const keyring = new Keyring({ type: 'sr25519' })
+const { stringToHex } = require('@polkadot/util')
 export default function Create() {
     const [blockchain, setblockchain] = useState("polkadot")
     const [questionId, setquestionId] = useState()
     const [question, setquestion] = useState("")
+
+  const {isConnected, accounts, activeSigner, activeAccount, activeExtension, api, activeChain} = usePolkit()
+
+   console.log("the connected  accounts",  activeSigner)
+   const signRaw = activeSigner?.signRaw;
+    const polkadot_key_format = (from, to) => {
+      let public_key
+      // when "from" is not correct, this will return a zero address (new Uint8Array(32))
+      // this is convient for test, e.g., u wanna generate a zero address with different format
+      if (!from || from === null || from === undefined || from === ''){
+      
+          public_key =  new Uint8Array(32)
+  
+          console.log("the public key", public_key)
+         
+      }else{
+          public_key = keyring.decodeAddress(from)
+          console.log("the public key", public_key)
+  
+          
+      }
+       
+      switch (to) {
+          // For tx about XCM crosschain, it always requires a account32, i.e., to = "public_key" in this function.
+          // This is crucial, wrong format will leads to asset loss during the XCM process. I have lost a lot....
+          case 'public_key': {
+              return u8aToHex(public_key)
+          }
+          // For most tx, "to" = "substrate". 
+          case 'substrate': {
+              return keyring.encodeAddress(public_key, 42) 
+          }
+          // Only for some special cases, "to" = "relay" 
+          case 'relay':{
+              return keyring.encodeAddress(public_key, 0) 
+          }
+      }
+  }
+  // Because when the account will be killed if DOT < 1. So, we use the transferKeepAlive to avoid such issue. 
+  
+  
+  
+    const handlCreate = async () => {
+
+    
+  
+  const tx_tranfer_to_self = api?.tx.balances.transferKeepAlive(polkadot_key_format(activeAccount?.address, 'public_key'), "0")
+  // For now, wo use the call "remark" to store the inscription data(Always JSON format). Here, it requires Hex data.
+  // Here, "formState" dynamically records the content in figure 2.
+  const tx_remark = api?.tx.system.remark(
+                    stringToHex(
+                      JSON.stringify(
+                        {
+                          "p": "drc-20-a",
+                          "op": "deployQuestion",
+                          "space":"aiweb3-AMA",
+                          "questionID": "1", 
+                          "question": "hello world",
+                                
+                        }
+                      )
+                    )
+  
+                  )
+                  
+  // "batchAll" can submit multi-event in a single tx. 
+  try  {
+    const tx_batchAll = await api?.tx.utility.batchAll(
+    [tx_tranfer_to_self,tx_remark]
+    ).signAndSend(
+      // active  account from polconnect  
+    activeAccount.address, { signer: activeSigner }, ({ status }) => {
+      if (status.isInBlock) {
+          console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+      } else {
+          console.log(`Current status: ${status.type}`);
+      }
+  }).catch((error: any) => {
+      console.log(':( transaction failed', error);
+  });
+
+    
+  } catch(error){
+    alert(`something went wrong, ${error}`)
+
+    }}
   return (
     <div className='max-w-7xl h-screen mx-auto  flex items-center justify-center'>
         <div className='w-2/5 border border-gray-700 min-h-[400px] p-4 rounded-lg'>
@@ -42,7 +133,7 @@ export default function Create() {
                  />
                     
         </div> 
-        <Button  className='w-full bg-pink-600/85'>Post Question</Button>
+        <Button  className='w-full bg-pink-600/85' onClick={() => handlCreate()}>Post Question</Button>
 
         </div>
         </div>
