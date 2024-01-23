@@ -51,11 +51,33 @@ export default function Create() {
   }
   // Because when the account will be killed if DOT < 1. So, we use the transferKeepAlive to avoid such issue. 
   
+   
+
+  // SAVE QUEST TO DB
+    const  handleSave = async (hash ) =>  {
+          
+ const CREATE_TO_DB_URL = "http://url:1986/create_quest_in_database" 
+
+ const data = JSON.stringify({
+  "network":"Astar",
+  "space":"testing space",
+  "question_ID":1,
+  "question": "this  is testing quests",
+  "deploy_hash": hash
+})
+const response = await fetch(CREATE_TO_DB_URL, data)
+
+console.log("this is saved inscriprition", response)
+    }
+
+   
   
   
     const handlCreate = async () => {
 
-    
+   
+
+
   
   const tx_tranfer_to_self = api?.tx.balances.transferKeepAlive(polkadot_key_format(activeAccount?.address, 'public_key'), "0")
   // For now, wo use the call "remark" to store the inscription data(Always JSON format). Here, it requires Hex data.
@@ -75,16 +97,19 @@ export default function Create() {
                     )
   
                   )
-                  
-  // "batchAll" can submit multi-event in a single tx. 
+
   try  {
-    const tx_batchAll = await api?.tx.utility.batchAll(
+    const tx_batchAll = await api?.tx.system?.remark(
     [tx_tranfer_to_self,tx_remark]
     ).signAndSend(
       // active  account from polconnect  
     activeAccount.address, { signer: activeSigner }, ({ status }) => {
       if (status.isInBlock) {
           console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+
+          // handle save quest to db
+          
+          handleSave(status.asInBlock.toString())
       } else {
           console.log(`Current status: ${status.type}`);
       }
@@ -103,20 +128,7 @@ export default function Create() {
            <h1 className='text-center font-extrabold text-xl text-gray-300'>Only Whitelisted Admins can create Q / A</h1> 
   
             <div className='my-5'>
-              {/*}
-                <div className='flex flex-col gap-2 mb-4'>
-                    <h3 className='text-gray-400'>Blockachin</h3>
-                 <select value={blockchain} name='blockhain' onChange={e => setblockchain(e.target.value)}
-                  className='w-full px-3 py-2 bg-inherit border focus:outline-none border-pink-600/25 rounded-lg'
-                 >
-                     <option value="polkadot" 
-                     className='bg-inherit '
-                     >Polkadot</option>
-                     <option value="astar"
-                        className='bg-inherit ' 
-                     >Astar</option>
-                 </select>
-  </div> */}
+           
   
         <div className='flex flex-col gap-2 mb-4'>
                     <h3 className='text-gray-400'>Question Id</h3>

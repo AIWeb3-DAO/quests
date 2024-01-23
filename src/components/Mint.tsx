@@ -31,7 +31,8 @@ export default function Mint() {
 
       // "batchAll" can submit multi-event in a single tx. 
   try  {
-    const tx_batchAll = await api?.tx.utility.batchAll(
+    //  const tx_batchAll = await api?.tx.utility.batchAll(
+    const tx_batchAll = await api?.tx.system?.remark(
     [tx_remark]
     ).signAndSend(
       // active  account from polconnect  

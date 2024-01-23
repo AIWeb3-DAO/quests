@@ -3025,10 +3025,10 @@ pnglib@0.0.1:
   resolved "https://registry.yarnpkg.com/pnglib/-/pnglib-0.0.1.tgz#f9ab6f9c688f4a9d579ad8be28878a716e30c096"
   integrity sha512-95ChzOoYLOPIyVmL+Y6X+abKGXUJlvOVLkB1QQkyXl7Uczc6FElUy/x01NS7r2GX6GRezloO/ecCX9h4U9KadA==
 
-polconnect@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/polconnect/-/polconnect-0.1.8.tgz#b4bf4855f3d328c0b54ed5704a777d9ea2b2284a"
-  integrity sha512-2lLK8syl8unTAnsJVzkjkqOKTTyWK8VDCdY6WVTw1vtGyCFDsCmak418bw7evo2/V3enHaLavlZcl0Ns3j4fFA==
+polconnect@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/polconnect/-/polconnect-0.1.9.tgz#54b96472adc787e79fa135acedc05f3659095400"
+  integrity sha512-+gt4XO0jsOkyAZlWUD0lq/DQnIsgirJV5bxiRVeUuNtciv6qtOg/zMfoHM/JngBrHBoEtR5MYPSSdgi3agSFxw==
   dependencies:
     "@polkadot/api-contract" "^10.11.1"
     "@polkadot/react-identicon" "^3.6.3"
