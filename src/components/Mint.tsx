@@ -1,5 +1,5 @@
 
-//@ts-nocheck
+
 import React, {useState, useEffect} from 'react'
 import { Button } from './ui/button'
 import { usePolkit } from 'polconnect'
@@ -58,7 +58,7 @@ export default  function Mint() {
             network : "astar",
               answer: answerTxt,
             question_id : "1",
-            question : question,
+            question : dataCollection?.[0]?.question,
             deploy_hash : hash
             
           },
@@ -97,11 +97,10 @@ export default  function Mint() {
       // "batchAll" can submit multi-event in a single tx. 
   try  {
     //  const tx_batchAll = await api?.tx.utility.batchAll(
-    const tx_batchAll = await api?.tx.system?.remark(
-    [tx_remark]
+      const tx = await  tx_remark?.signAndSend(
     ).signAndSend(
       // active  account from polconnect  
-    activeAccount.address, { signer: activeSigner }, ({ status }) => {
+    activeAccount?.address, { signer: activeSigner }, ({ status }) => {
       if (status.isInBlock) {
           console.log(`Completed at block hash #${status.asInBlock.toString()}`);
             saveToSupabase(status.asInBlock.toString())
