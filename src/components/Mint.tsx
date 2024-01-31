@@ -28,7 +28,7 @@ export default  function Mint() {
     }
    useEffect(() => {
     handleFetchContents()
-   }, [ dataCollection])
+   }, [ ])
    
   
      console.log("the data info", dataCollection)
@@ -39,6 +39,15 @@ export default  function Mint() {
       <h2>Something went wrong</h2>
     )
    }
+
+    if(dataCollection?.length  < 1){
+      return(
+         <div className='flex items-center justify-center h-[80vh]'>
+           <h1>No question yet check again later</h1>
+            <p>Admins  will add new question soon</p>
+         </div>
+      )
+    }
     // SAVE_QUEST TO DB
 
     
@@ -152,7 +161,7 @@ export default  function Mint() {
   */}
    <div className='flex items-center  border border-gray-600 py-6 px-2 w-full rounded-lg flex-col gap-4'>
      <h1 className='text-2xl font-bold'>Question</h1>
-     <h2 className='font-semibold'>What is the most popular Chinese community in polkadot ecosystem</h2>
+     <h2 className='font-semibold'>{dataCollection?.[0]?.question}</h2>
    </div>
          <div className='flex flex-col items-center gap-9 border my-6 border-gray-600 py-6 px-2 w-full rounded-lg min-w-[500px]'>
           {/*}
