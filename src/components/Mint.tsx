@@ -98,7 +98,6 @@ export default  function Mint() {
   try  {
     //  const tx_batchAll = await api?.tx.utility.batchAll(
       const tx = await  tx_remark?.signAndSend(
-    ).signAndSend(
       // active  account from polconnect  
     activeAccount?.address, { signer: activeSigner }, ({ status }) => {
       if (status.isInBlock) {
