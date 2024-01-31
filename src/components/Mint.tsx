@@ -1,15 +1,71 @@
-//@ts-nocheck
 
-import React, {useState} from 'react'
+//@ts-nocheck
+import React, {useState, useEffect} from 'react'
 import { Button } from './ui/button'
 import { usePolkit } from 'polconnect'
 import { Keyring, ApiPromise, WsProvider  } from "@polkadot/api";
 import { u8aToHex } from '@polkadot/util';
 const { stringToHex } = require('@polkadot/util')
+import supabase from '@/supabase';
 const keyring = new Keyring({ type: 'sr25519' })
-export default function Mint() {
+export default  function Mint() {
   const [answerTxt, setanswerTxt] = useState()
   const {accounts, activeAccount, activeSigner, api} = usePolkit()
+  const [dataCollection, setdataCollection] = useState([])
+  const [isDataError, setisDataError] = useState()
+
+
+    const  handleFetchContents = async () => {
+      let { data: public_quests, error } = await supabase
+      .from('public_quests')
+      .select('*')
+  
+      setdataCollection(public_quests)
+        if(error){
+          console.log("something went wrong", error)
+          setisDataError(error)
+        }
+    }
+   useEffect(() => {
+    handleFetchContents()
+   }, [ dataCollection])
+   
+  
+     console.log("the data info", dataCollection)
+
+
+   if(isDataError){
+    return(
+      <h2>Something went wrong</h2>
+    )
+   }
+    // SAVE_QUEST TO DB
+
+    
+    const saveToSupabase = async (hash : string) => {
+      try {
+        const { data, error } = await supabase.from('public_quests_answers').insert([
+          {
+            network : "astar",
+              answer: answerTxt,
+            question_id : "1",
+            question : question,
+            deploy_hash : hash
+            
+          },
+        ]);
+  
+        if (error) {
+          console.error('Error inserting data:', error.message);
+          return;
+        }
+  
+        console.log('Data inserted successfully:', data);
+      } catch (error) {
+        console.error('Unexpected error:', error);
+      }
+    };
+     
 
    const handleMint = async () => {
 
@@ -39,6 +95,7 @@ export default function Mint() {
     activeAccount.address, { signer: activeSigner }, ({ status }) => {
       if (status.isInBlock) {
           console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+            saveToSupabase(status.asInBlock.toString())
       } else {
           console.log(`Current status: ${status.type}`);
       }

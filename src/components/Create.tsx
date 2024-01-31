@@ -5,6 +5,7 @@ import { Button } from './ui/button'
 import { Keyring, ApiPromise, WsProvider  } from "@polkadot/api";
 import { u8aToHex } from '@polkadot/util';
 import { usePolkit } from "polconnect";
+import supabase from '@/supabase';
 const keyring = new Keyring({ type: 'sr25519' })
 const { stringToHex } = require('@polkadot/util')
 export default function Create() {
@@ -14,7 +15,28 @@ export default function Create() {
 
   const {isConnected, accounts, activeSigner, activeAccount, activeExtension, api, activeChain} = usePolkit()
 
-   console.log("the connected  accounts",  activeSigner)
+
+   const addSpace = async () => {
+    try {
+      const { data, error } = await supabase.from('public_spaces').insert([
+        {
+          space_name : "testing space",
+          space_description: "Moonbema tester",
+          
+        },
+      ]);
+
+      if (error) {
+        console.error('Error inserting data:', error.message);
+        return;
+      }
+
+      console.log('Data inserted successfully:', data);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  };
+
    const signRaw = activeSigner?.signRaw;
     const polkadot_key_format = (from, to) => {
       let public_key
@@ -53,7 +75,7 @@ export default function Create() {
   
    
 
-  // SAVE QUEST TO DB
+  // SAVE QUEST TO DB DEPREICATD
     const  handleSave = async (hash ) =>  {
           
  const CREATE_TO_DB_URL = "http://url:1986/create_quest_in_database" 
@@ -70,6 +92,32 @@ const response = await fetch(CREATE_TO_DB_URL, data)
 console.log("this is saved inscriprition", response)
     }
 
+    // SAVE_QUEST TO DB
+
+    
+   const saveToSupabase = async (hash : string) => {
+    try {
+      const { data, error } = await supabase.from('public_quests').insert([
+        {
+          network : "astar",
+          space_name: "Ai web3 AMA",
+          question_id : "1",
+          question : question,
+          deploy_hash : hash
+          
+        },
+      ]);
+
+      if (error) {
+        console.error('Error inserting data:', error.message);
+        return;
+      }
+
+      console.log('Data inserted successfully:', data);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  };
    
   
   
@@ -109,7 +157,7 @@ console.log("this is saved inscriprition", response)
 
           // handle save quest to db
           
-          handleSave(status.asInBlock.toString())
+            saveToSupabase(status.asInBlock.toString())
       } else {
           console.log(`Current status: ${status.type}`);
       }
@@ -149,6 +197,7 @@ console.log("this is saved inscriprition", response)
                     
         </div> 
         <Button  className='w-full bg-pink-600/85' onClick={() => handlCreate()} disabled={!isConnected && !activeAccount}>Post Question</Button>
+
 
         </div>
         </div>
